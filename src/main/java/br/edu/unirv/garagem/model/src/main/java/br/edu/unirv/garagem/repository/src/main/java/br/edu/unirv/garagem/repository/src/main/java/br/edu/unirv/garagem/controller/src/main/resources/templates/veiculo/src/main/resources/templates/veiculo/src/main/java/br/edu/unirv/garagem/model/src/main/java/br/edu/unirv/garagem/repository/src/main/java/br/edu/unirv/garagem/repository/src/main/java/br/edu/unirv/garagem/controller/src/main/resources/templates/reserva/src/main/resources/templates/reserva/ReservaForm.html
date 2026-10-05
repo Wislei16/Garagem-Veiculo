@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulário de Reserva</title>
+</head>
+<body>
+    <h1 th:text="${reserva.id == null ? 'Criar Nova Reserva' : 'Editar Reserva'}"></h1>
+
+    <form th:action="${reserva.id == null ? '/reservas/novo' : '/reservas/' + reserva.id + '/editar'}" th:object="${reserva}" method="post">
+
+        <!-- Mensagem global caso a validação de conflito de datas seja ativada -->
+        <div style="color: red; font-weight: bold;" th:if="${#fields.hasErrors('*')}">
+            <p>Erro! Verifique as mensagens abaixo. A aplicação bloqueou a ação para evitar conflitos.</p>
+        </div>
+
+        <label for="veiculoId">Veículo:</label><br>
+        <select id="veiculoId" th:field="*{veiculoId}" required>
+            <option value="" disabled selected>Selecione um veículo...</option>
+            <option th:each="v : ${veiculos}" th:value="${v.id}" th:text="${v.placa + ' - ' + v.modelo}"></option>
+        </select>
+        <span style="color: red;" th:if="${#fields.hasErrors('veiculoId')}" th:errors="*{veiculoId}"></span><br><br>
+
+        <label for="pessoaId">Pessoa:</label><br>
+        <select id="pessoaId" th:field="*{pessoaId}" required>
+            <option value="" disabled selected>Selecione uma pessoa...</option>
+            <option th:each="p : ${pessoas}" th:value="${p.id}" th:text="${p.nome}"></option>
+        </select>
+        <span style="color: red;" th:if="${#fields.hasErrors('pessoaId')}" th:errors="*{pessoaId}"></span><br><br>
+
+        <label for="dataInicio">Data de Início:</label><br>
+        <input type="date" id="dataInicio" th:field="*{dataInicio}" required>
+        <span style="color: red;" th:if="${#fields.hasErrors('dataInicio')}" th:errors="*{dataInicio}"></span><br><br>
+
+        <label for="dataFim">Data de Fim:</label><br>
+        <input type="date" id="dataFim" th:field="*{dataFim}" required>
+        <span style="color: red;" th:if="${#fields.hasErrors('dataFim')}" th:errors="*{dataFim}"></span><br><br>
+
+        <button type="submit">Salvar Reserva</button>
+    </form>
+    <br>
+    <a th:href="@{/reservas}">Voltar para Reservas</a>
+</body>
+</html>
