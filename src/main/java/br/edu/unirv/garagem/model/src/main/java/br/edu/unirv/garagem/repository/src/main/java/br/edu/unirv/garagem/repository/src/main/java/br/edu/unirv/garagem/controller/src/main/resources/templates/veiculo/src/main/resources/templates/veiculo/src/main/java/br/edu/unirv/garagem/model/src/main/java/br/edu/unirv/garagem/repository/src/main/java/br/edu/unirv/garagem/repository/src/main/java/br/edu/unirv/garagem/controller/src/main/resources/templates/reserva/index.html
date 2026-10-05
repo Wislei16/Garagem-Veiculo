@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Página Inicial - Reservas</title>
+</head>
+<body>
+    <h1>Gestão de Reservas</h1>
+
+    <a th:href="@{/reservas/novo}">Criar Nova Reserva</a> | 
+    <a th:href="@{/veiculos}">Gerir Veículos</a> | 
+    <a th:href="@{/pessoas}">Gerir Pessoas</a>
+    <br><br>
+
+    <h2>Reservas Atuais</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Veículo (Placa - Modelo)</th>
+                <th>Pessoa (Nome)</th>
+                <th>Data Início</th>
+                <th>Data Fim</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="r : ${reservas}">
+                <td th:text="${r.id}"></td>
+                <!-- Cruzamento de dados para mostrar a Placa e o Modelo em vez do ID -->
+                <td th:text="${veiculos.?[id == r.veiculoId][0].placa + ' - ' + veiculos.?[id == r.veiculoId][0].modelo}"></td>
+                <!-- Cruzamento de dados para mostrar o Nome da Pessoa -->
+                <td th:text="${pessoas.?[id == r.pessoaId][0].nome}"></td>
+                <td th:text="${r.dataInicio}"></td>
+                <td th:text="${r.dataFim}"></td>
+                <td>
+                    <a th:href="@{/reservas/{id}/editar(id=${r.id})}">Editar</a>
+                    <form th:action="@{/reservas/{id}/excluir(id=${r.id})}" method="post" style="display:inline;">
+                        <button type="submit" onclick="return confirm('Tem a certeza que deseja cancelar (excluir) esta reserva?');">Cancelar</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
