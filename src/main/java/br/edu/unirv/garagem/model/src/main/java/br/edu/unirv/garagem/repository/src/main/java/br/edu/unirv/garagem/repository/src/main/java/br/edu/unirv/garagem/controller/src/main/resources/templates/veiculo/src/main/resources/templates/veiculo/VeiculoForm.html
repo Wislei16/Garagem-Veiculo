@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulário de Veículo</title>
+</head>
+<body>
+    <h1 th:text="${veiculo.id == null ? 'Cadastrar Novo Veículo' : 'Editar Veículo'}"></h1>
+    
+    <form th:action="${veiculo.id == null ? '/veiculos/novo' : '/veiculos/' + veiculo.id + '/editar'}" th:object="${veiculo}" method="post">
+        
+        <div style="color: red;" th:if="${#fields.hasErrors('*')}">
+            <p>Verifique os erros abaixo:</p>
+        </div>
+
+        <label for="placa">Placa:</label><br>
+        <input type="text" id="placa" th:field="*{placa}" required>
+        <span style="color: red;" th:if="${#fields.hasErrors('placa')}" th:errors="*{placa}"></span><br><br>
+
+        <label for="marca">Marca:</label><br>
+        <input type="text" id="marca" th:field="*{marca}" required>
+        <span style="color: red;" th:if="${#fields.hasErrors('marca')}" th:errors="*{marca}"></span><br><br>
+
+        <label for="modelo">Modelo:</label><br>
+        <input type="text" id="modelo" th:field="*{modelo}" required>
+        <span style="color: red;" th:if="${#fields.hasErrors('modelo')}" th:errors="*{modelo}"></span><br><br>
+
+        <label for="ano">Ano:</label><br>
+        <input type="number" id="ano" th:field="*{ano}" required>
+        <span style="color: red;" th:if="${#fields.hasErrors('ano')}" th:errors="*{ano}"></span><br><br>
+
+        <label for="cor">Cor (Opcional):</label><br>
+        <input type="text" id="cor" th:field="*{cor}"><br><br>
+
+        <button type="submit">Salvar</button>
+    </form>
+    <br>
+    <a th:href="@{/veiculos}">Voltar para a lista</a>
+</body>
+</html>
